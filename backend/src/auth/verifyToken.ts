@@ -6,7 +6,7 @@ interface AuthRequest extends Request {
 }
 
 export const authenticate = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -29,7 +29,7 @@ export const authenticate = async (
       token,
       process.env.JWT_SECRET_KEY as string
     );
-    req.userId = decoded.id;
+    (req as AuthRequest).userId = decoded.id;
     next();
   } catch (error: any) {
     if (error.name === "TokenExpiredError") {

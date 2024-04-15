@@ -8,6 +8,7 @@ import Home from "@/pages/home/Home";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import DashboardLayout from "@/layout/DashboardLayout";
+import Settings from "./module/settings";
 
 const queryClient = new QueryClient();
 
@@ -45,12 +46,16 @@ const router = createBrowserRouter([
         element: <div>bills</div>,
       },
       {
+        path: "expenses",
+        element: <div>expenses</div>,
+      },
+      {
         path: "goals",
         element: <div>goals</div>,
       },
       {
         path: "settings",
-        element: <div>settings</div>,
+        element: <Settings />,
       },
     ],
   },

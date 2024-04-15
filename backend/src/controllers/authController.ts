@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import prisma from "../db/prisma";
 import validator from "validator";
-import { create } from "ts-node";
 type User = {
   id: string;
   name: string | null;
