@@ -25,13 +25,7 @@ const Sidebar = () => {
                   : ``
               } flex items-center my-5 gap-x-2  py-2 px-8 whitespace-nowrap`}
             >
-              <span
-                className={`w-8 ${
-                  location.pathname === item.path ? "fill-white" : ""
-                }`}
-              >
-                {item.icon}
-              </span>
+              <span>{item.icon}</span>
               <p>{item.name}</p>
             </Link>
           ))}
