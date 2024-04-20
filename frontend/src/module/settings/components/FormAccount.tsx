@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -17,19 +17,22 @@ import {
 } from "@/lib/validationForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { number } from "zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "@/api/api";
 import { toast } from "sonner";
+import { authContext } from "@/context/AuthContext";
+import { parse } from "path";
 const FormAccount = () => {
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [previewURL, setPreviewURL] = useState<any>(null);
-
+  const { user } = useContext(authContext);
+  const queryClient = useQueryClient();
   const form = useForm<UpdateProfileSchemaType>({
     resolver: zodResolver(UpdateProfileSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
+      name: user?.name || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
       photo: "",
     },
   });
@@ -52,10 +55,11 @@ const FormAccount = () => {
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: UpdateProfileSchemaType) => {
-      return updateProfile(data);
+      return updateProfile({ ...data, userId: user?.id });
     },
     onSuccess: () => {
       toast.success("Profile updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
     },
     onError: (error: any) => {
       toast.error(error.response.data.message);
@@ -64,12 +68,14 @@ const FormAccount = () => {
 
   function onSubmit(values: UpdateProfileSchemaType) {
     const { name, email, phone, photo } = values;
+
     updateProfileMutation.mutate({
       name,
       email,
       phone,
       photo: selectedFile,
     });
+    console.log(updateProfileMutation.mutate);
   }
   return (
     <div className="">

@@ -1,7 +1,9 @@
 import Sidebar from "@/components/Sidebar";
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigation } from "react-router-dom";
 const DashboardLayout = () => {
+  const navigation = useNavigation();
+  const isLooading = navigation.state === "loading";
   return (
     <>
       <div className="flex w-full max-h-screen min-h-screen">

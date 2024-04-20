@@ -1,12 +1,34 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu } from "@/constant/menu";
 import { Button } from "./ui/button";
 
 import { IoLogOutOutline as Logout } from "react-icons/io5";
+import { authContext } from "@/context/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { getProfile } from "@/api/api";
 
 const Sidebar = () => {
   const location = useLocation();
+  const { dispatch, user } = useContext(authContext);
+
+  const navigate = useNavigate();
+
+  const profile = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const data = await getProfile(user?.id);
+      return data;
+    },
+  });
+
+  const userData = profile.data;
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    navigate("/");
+  };
+
   return (
     <aside className="text-white w-60 bg-slate-900">
       {/* Logo */}
@@ -35,6 +57,7 @@ const Sidebar = () => {
         <Button
           variant={"ghost"}
           className="w-full my-4 space-x-2 text-white transition-colors duration-300 cursor-pointer bg-slate-700 hover:bg-slate-800 hover:text-white"
+          onClick={handleLogout}
         >
           <span>
             <Logout />
@@ -46,12 +69,15 @@ const Sidebar = () => {
         <div className="flex items-center px-4 pt-4 space-x-6  border-t-[1px] border-gray-600">
           {/* Image and name */}
           <img
-            src="https://www.pngitem.com/pimgs/m/78-786293_1240-x-1240-0-avatar-profile-icon-png.png"
+            src={
+              userData?.photo ||
+              "https://www.pngitem.com/pimgs/m/78-786293_1240-x-1240-0-avatar-profile-icon-png.png"
+            }
             alt=""
-            className="w-10 h-10 rounded-full"
+            className="object-cover w-10 h-10 rounded-full"
           />
           <div>
-            <p>John Doe</p>
+            <p>{userData?.name}</p>
             <Link to={"/dashboard/settings"}>
               <p className="text-xs text-gray-400">View Profile</p>
             </Link>

@@ -3,6 +3,33 @@ import bcrypt from "bcryptjs";
 import prisma from "../db/prisma";
 import { Request, Response } from "express";
 
+export const getUser = async (req: Request, res: Response) => {
+  const { id: userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ error: "User not found" });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+      photo: true,
+    },
+  });
+
+  if (!user) {
+    return res.status(400).json({ error: "User not found" });
+  }
+
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+};
 export const updateUser = async (req: Request, res: Response) => {
   const { id: userId } = req.params;
   if (!userId) {
@@ -10,18 +37,16 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 
   try {
-    const { name, email, password } = req.body as Pick<
-      User,
-      "name" | "email" | "password"
-    >;
-    const hashedPassword = password && (await bcrypt.hash(password, 10));
-
+    const { name, email, photo, phone } = req.body as User;
+    // const hashedPassword = await bcrypt.hash(password, 10);
     const updateUser = await prisma.user.update({
-      where: { id: userId },
+      where: { email },
       data: {
-        ...(name && { name }),
-        ...(email && { email }),
-        ...(hashedPassword && { password: hashedPassword }),
+        name,
+        email,
+        // password: hashedPassword,
+        phone,
+        photo,
       },
     });
 

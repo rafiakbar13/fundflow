@@ -1,17 +1,17 @@
-import axios from "axios";
 import {
   LoginSchemaType,
   RegisterSchemaType,
   UpdateProfileSchemaType,
 } from "@/lib/validationForm";
-const baseUrl: string = import.meta.env.VITE_API_URL;
+import API from "@/lib/config";
+import { get } from "http";
 
 export const register = async ({
   name,
   email,
   password,
 }: RegisterSchemaType) => {
-  const res = await axios.post(`${baseUrl}/auth/register`, {
+  const res = await API.post(`/auth/register`, {
     name,
     email,
     password,
@@ -20,11 +20,13 @@ export const register = async ({
 };
 
 export const login = async ({ email, password }: LoginSchemaType) => {
-  const res = await axios.post(`${baseUrl}/auth/login`, {
+  const res = await API.post(`/auth/login`, {
     email,
     password,
   });
-  return res.data.data;
+  console.log(res);
+
+  return res.data;
 };
 
 export const updateProfile = async ({
@@ -32,20 +34,18 @@ export const updateProfile = async ({
   name,
   photo,
   phone,
-}: UpdateProfileSchemaType) => {
-  const res = await axios.put(
-    `${baseUrl}/user/:id`,
-    {
-      email,
-      name,
-      photo,
-      phone,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
+  userId,
+}: UpdateProfileSchemaType & { userId: String }) => {
+  const res = await API.patch(`/user/${userId}`, {
+    email,
+    name,
+    photo,
+    phone,
+  });
+  return res.data.data;
+};
+
+export const getProfile = async (userId: string) => {
+  const res = await API.get(`/user/${userId}`);
   return res.data.data;
 };

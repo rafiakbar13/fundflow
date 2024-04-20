@@ -9,6 +9,7 @@ import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Settings from "./module/settings";
+import ProtectedRoutes from "./lib/protectedRoutes";
 
 const queryClient = new QueryClient();
 
@@ -55,7 +56,11 @@ const router = createBrowserRouter([
       },
       {
         path: "settings",
-        element: <Settings />,
+        element: (
+          <ProtectedRoutes>
+            <Settings />
+          </ProtectedRoutes>
+        ),
       },
     ],
   },

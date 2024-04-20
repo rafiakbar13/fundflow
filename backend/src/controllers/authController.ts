@@ -102,6 +102,8 @@ export const login = async (req: Request, res: Response) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        photo: user.photo,
+        phone: user.phone,
         createdAt: user.createdAt,
       },
     });

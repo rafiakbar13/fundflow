@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -18,9 +18,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { authContext } from "@/context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { dispatch } = useContext(authContext);
+
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -33,7 +36,14 @@ const Login = () => {
     mutationFn: async (data: LoginSchemaType) => {
       return login(data);
     },
-    onSuccess: () => {
+    onSuccess: (data: any) => {
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: {
+          user: data.data,
+          token: data.token,
+        },
+      });
       toast.success("Login Successful");
       navigate("/dashboard");
     },
