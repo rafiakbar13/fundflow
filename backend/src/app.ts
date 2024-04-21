@@ -6,6 +6,8 @@ import cors, { CorsOptions } from "cors";
 import helmet from "helmet";
 import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
+import goalRouter from "./routes/goals";
+import expensesRouter from "./routes/expenses";
 dotenv.config();
 
 const app: Application = express();
@@ -30,7 +32,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
-
+app.use("/api/goal", goalRouter);
+app.use("/api/expenses", expensesRouter);
 app.listen(port, () => {
   return console.log(`Server running on port at http://localhost:${port}`);
 });

@@ -18,6 +18,24 @@ export const getUser = async (req: Request, res: Response) => {
       email: true,
       phone: true,
       photo: true,
+      goals: {
+        select: {
+          id: true,
+          presentAmount: true,
+          targetAmount: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      expenses: {
+        select: {
+          id: true,
+          category: true,
+          targetAmount: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
     },
   });
 

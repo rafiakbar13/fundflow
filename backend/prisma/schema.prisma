@@ -21,6 +21,33 @@ model User {
   password  String
   photo     String?
   phone     String?
+
+  goals     Goals[]
+  expenses  Expenses[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Goals {
+  id        String   @id @default(cuid()) @unique
+ 
+  targetAmount Int?
+  presentAmount Int?
+
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Expenses {
+  id        String   @id @default(cuid()) @unique
+  targetAmount    String?
+  category  String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
