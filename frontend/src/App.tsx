@@ -8,8 +8,9 @@ import Home from "@/pages/home/Home";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import DashboardLayout from "@/layout/DashboardLayout";
-import Settings from "./module/settings";
-import ProtectedRoutes from "./lib/protectedRoutes";
+import Settings from "@/module/settings";
+import ProtectedRoutes from "@/lib/protectedRoutes";
+import Goals from "@/module/goals";
 
 const queryClient = new QueryClient();
 
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
       },
       {
         path: "goals",
-        element: <div>goals</div>,
+        element: <Goals />,
       },
       {
         path: "settings",

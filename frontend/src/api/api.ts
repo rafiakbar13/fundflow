@@ -49,3 +49,22 @@ export const getProfile = async (userId: string) => {
   const res = await API.get(`/user/${userId}`);
   return res.data.data;
 };
+
+//TODO API GOALS
+export const getGoals = async (userId: string) => {
+  const res = await API.get(`/user/${userId}`);
+  return res.data.data;
+};
+
+// TODO API Expenses by category
+export const getExpenses = async (userId: string) => {
+  const res = await API.get(`/user/${userId}`);
+  return res.data.data;
+};
+
+export const updateExpenses = async ({ expensesId, targetAmount }: any) => {
+  const res = await API.patch(`/expenses/${expensesId}`, {
+    targetAmount,
+  });
+  return res.data.data;
+};

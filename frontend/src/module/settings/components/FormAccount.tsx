@@ -27,6 +27,7 @@ const FormAccount = () => {
   const [previewURL, setPreviewURL] = useState<any>(null);
   const { user } = useContext(authContext);
   const queryClient = useQueryClient();
+
   const form = useForm<UpdateProfileSchemaType>({
     resolver: zodResolver(UpdateProfileSchema),
     defaultValues: {

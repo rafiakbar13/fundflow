@@ -1,15 +1,14 @@
 import Sidebar from "@/components/Sidebar";
+import Navbar from "@/components/dashboard/Navbar";
 import React from "react";
-import { Outlet, useNavigation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 const DashboardLayout = () => {
-  const navigation = useNavigation();
-  const isLooading = navigation.state === "loading";
   return (
     <>
       <div className="flex w-full max-h-screen min-h-screen">
         <Sidebar />
-        <main className="w-screen p-4">
-          <header>navbar</header>
+        <main className="w-screen bg-gray-100">
+          <Navbar />
           <Outlet />
         </main>
       </div>
