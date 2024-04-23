@@ -11,6 +11,8 @@ import DashboardLayout from "@/layout/DashboardLayout";
 import Settings from "@/module/settings";
 import ProtectedRoutes from "@/lib/protectedRoutes";
 import Goals from "@/module/goals";
+import Transactions from "./module/transactions";
+import Balances from "./module/balances";
 
 const queryClient = new QueryClient();
 
@@ -37,11 +39,11 @@ const router = createBrowserRouter([
       },
       {
         path: "balances",
-        element: <div>profile</div>,
+        element: <Balances />,
       },
       {
         path: "transactions",
-        element: <div>transactions</div>,
+        element: <Transactions />,
       },
       {
         path: "bills",

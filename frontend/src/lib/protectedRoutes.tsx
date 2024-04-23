@@ -7,11 +7,9 @@ type Props = {
 
 const ProtectedRoutes = ({ children }: Props) => {
   const { token } = useContext(authContext);
-  const accessibleRoute = token ? (
-    children
-  ) : (
-    <Navigate to="/login" replace={true} />
-  );
+
+  const accessibleRoute =
+    token !== null ? children : <Navigate to="/login" replace={true} />;
   return accessibleRoute;
 };
 
