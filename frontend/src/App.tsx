@@ -13,6 +13,9 @@ import ProtectedRoutes from "@/lib/protectedRoutes";
 import Goals from "@/module/goals";
 import Transactions from "./module/transactions";
 import Balances from "./module/balances";
+import Bills from "./module/bills";
+import Expenses from "./module/expenses";
+import BalanceItem from "./module/balances/components/BalanceItem";
 
 const queryClient = new QueryClient();
 
@@ -42,16 +45,20 @@ const router = createBrowserRouter([
         element: <Balances />,
       },
       {
+        path: "balances/:id",
+        element: <BalanceItem />,
+      },
+      {
         path: "transactions",
         element: <Transactions />,
       },
       {
         path: "bills",
-        element: <div>bills</div>,
+        element: <Bills />,
       },
       {
         path: "expenses",
-        element: <div>expenses</div>,
+        element: <Expenses />,
       },
       {
         path: "goals",
