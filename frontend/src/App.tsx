@@ -16,6 +16,7 @@ import Balances from "./module/balances";
 import Bills from "./module/bills";
 import Expenses from "./module/expenses";
 import BalanceItem from "./module/balances/components/BalanceItem";
+import Dashboard from "./module/dashboard";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <div>dashboard</div>,
+        element: <Dashboard />,
       },
       {
         path: "balances",

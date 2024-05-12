@@ -1,5 +1,7 @@
 import Header from "@/components/Header";
 import React from "react";
+import ComparisonExpenses from "./ComparisonExpenses";
+import ExpensesBreakdown from "./ExpensesBreakdown";
 
 type Props = {};
 
@@ -8,11 +10,15 @@ const Expenses = (props: Props) => {
     <div className="p-4">
       {/* Goals */}
       <Header title="Expenses Comparison" />
-      <div className="flex gap-x-3">Chart</div>
+      <div className="">
+        <ComparisonExpenses />
+      </div>
       {/* Expenses Goals By Category */}
       <div className="mt-4">
         <Header title="Expenses Breakdown" />
-        <p>Expenses BreakDown</p>
+        <div>
+          <ExpensesBreakdown />
+        </div>
       </div>
     </div>
   );
