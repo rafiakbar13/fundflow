@@ -56,6 +56,22 @@ export const getGoals = async (userId: string) => {
   return res.data.data;
 };
 
+export const createGoals = async ({
+  userId,
+  targetAmount,
+  presentAmount,
+  dateRange,
+}: any) => {
+  const res = await API.post(`/goal/${userId}`, {
+    targetAmount,
+    presentAmount,
+    dateRange,
+  });
+  console.log(res);
+
+  return res.data.data;
+};
+
 // TODO API Expenses by category
 export const getExpenses = async (userId: string) => {
   const res = await API.get(`/user/${userId}`);

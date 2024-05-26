@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authContext } from "@/context/AuthContext";
 import Chart from "react-apexcharts";
 
@@ -27,12 +27,47 @@ import { PiMedalMilitaryLight as Achieved } from "react-icons/pi";
 import { TbArcheryArrow as Target } from "react-icons/tb";
 import { LuPencilLine as Pen } from "react-icons/lu";
 import { DatePicker } from "./date-picker";
-import { getGoals } from "@/api/api";
+import { getGoals, createGoals } from "@/services/api";
+import { toast } from "sonner";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { z } from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { addDays, format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 type Props = {};
 
 const SavingMoney = (props: Props) => {
   const { user } = useContext(authContext);
+  const queryClient = useQueryClient();
+  const { control, handleSubmit } = useForm();
+
+  // const FormSchema = z.object({
+  //   dob: z.date({
+  //     required_error: "A date of birth is required.",
+  //   }),
+  // });
+
+  // const form = useForm<z.infer<typeof FormSchema>>({
+  //   resolver: zodResolver(FormSchema),
+  // });
 
   const ChartConfig = {
     options: {
@@ -85,7 +120,28 @@ const SavingMoney = (props: Props) => {
   });
 
   const goal = goals.data?.goals;
-  console.log(goal);
+  // console.log(goal);
+
+  const createGoals: any = useMutation({
+    mutationFn: async (data: any) => {
+      return createGoals({ ...data, userId: user?.id });
+    },
+    onSuccess: () => {
+      toast.success("Goal Create successfully");
+      queryClient.invalidateQueries({ queryKey: ["goals"] });
+    },
+    onError: () => {
+      toast.error("Failed to create goals");
+    },
+  });
+
+  function onSubmit(values: any) {
+    const { dateRange, presentAmount, targetAmount } = values;
+    // const from = format(dateRange.from, "yyyy-MM-dd");
+
+    // const to = format(dateRange.to, "yyyy-MM-dd");
+    createGoals.mutate({ dateRange, presentAmount, targetAmount });
+  }
 
   return (
     <Card className="w-7/12 mt-2 bg-white border-none shadow-md">
@@ -141,32 +197,67 @@ const SavingMoney = (props: Props) => {
             </DialogTrigger>
             <DialogContent className="w-1/3">
               <div className="">
-                <form action="" className="flex flex-col gap-y-2">
+                <form
+                  action=""
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="flex flex-col gap-y-2"
+                >
+                  <div className="space-y-2">
+                    <Controller
+                      name="dateRange"
+                      control={control}
+                      defaultValue={{
+                        from: new Date(),
+                        to: addDays(new Date(), 7),
+                      }}
+                      render={({ field }) => (
+                        <div className="flex flex-col">
+                          <Label htmlFor="date">Target Goals</Label>
+                          <DatePicker
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
+                        </div>
+                      )}
+                    />
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="targetAmount">Target Amount</Label>
-                    <Input
-                      type="number"
-                      id="targetAmount"
+                    <Controller
                       name="targetAmount"
-                      className="w-full"
-                      placeholder="$200,000"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          type="number"
+                          id="targetAmount"
+                          placeholder="$200,000"
+                          {...field}
+                        />
+                      )}
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="presentAmount">Present Amount</Label>
-                    <Input
-                      type="number"
-                      id="presentAmount"
+                    <Controller
                       name="presentAmount"
-                      className="w-full"
-                      placeholder="$100,000"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          type="number"
+                          id="presentAmount"
+                          placeholder="$100,000"
+                          {...field}
+                        />
+                      )}
                     />
                   </div>
+
+                  <DialogFooter>
+                    <Button type="submit">Save</Button>
+                  </DialogFooter>
                 </form>
               </div>
-              <DialogFooter>
-                <Button type="submit">Save</Button>
-              </DialogFooter>
             </DialogContent>
           </Dialog>
         </CardFooter>

@@ -18,7 +18,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { number } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateProfile } from "@/api/api";
+import { updateProfile } from "@/services/api";
 import { toast } from "sonner";
 import { authContext } from "@/context/AuthContext";
 import { parse } from "path";

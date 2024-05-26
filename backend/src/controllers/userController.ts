@@ -31,7 +31,7 @@ export const getUser = async (req: Request, res: Response) => {
         select: {
           id: true,
           category: true,
-          targetAmount: true,
+          amount: true,
           createdAt: true,
           updatedAt: true,
         },

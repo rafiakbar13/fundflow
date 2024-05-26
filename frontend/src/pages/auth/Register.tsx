@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
-import { register } from "@/api/api";
+import { register } from "@/services/api";
 import { toast } from "sonner";
 
 const Register = () => {

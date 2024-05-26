@@ -25,6 +25,7 @@ model User {
   goals     Goals[]
   expenses  Expenses[]
 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -34,7 +35,8 @@ model Goals {
  
   targetAmount Int?
   presentAmount Int?
-
+  from DateTime?
+  to DateTime?
 
   userId    String
   user      User     @relation(fields: [userId], references: [id])
@@ -44,10 +46,26 @@ model Goals {
 
 model Expenses {
   id        String   @id @default(cuid()) @unique
-  targetAmount    String?
-  category  String
+  name      String?
+  amount    Int?
+
+  categoryId String
+  category   Category  @relation(fields: [categoryId], references: [id])
+
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Category {
+  id       String      @id @default(cuid()) @unique
+  name     String   @unique
+  budget   Int
+  expenses Expenses[]
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

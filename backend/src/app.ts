@@ -8,6 +8,7 @@ import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
 import goalRouter from "./routes/goals";
 import expensesRouter from "./routes/expenses";
+import categoryRouter from "./routes/category";
 dotenv.config();
 
 const app: Application = express();
@@ -34,6 +35,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/goal", goalRouter);
 app.use("/api/expenses", expensesRouter);
+app.use("/api/category", categoryRouter);
 app.listen(port, () => {
   return console.log(`Server running on port at http://localhost:${port}`);
 });

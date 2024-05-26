@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { IoLogOutOutline as Logout } from "react-icons/io5";
 import { authContext } from "@/context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "@/api/api";
+import { getProfile } from "@/services/api";
 
 const Sidebar = () => {
   const location = useLocation();

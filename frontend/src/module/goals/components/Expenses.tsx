@@ -25,7 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { getExpenses, updateExpenses } from "@/api/api";
+import { getExpenses, updateExpenses } from "@/services/api";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 

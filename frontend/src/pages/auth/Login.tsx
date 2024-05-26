@@ -6,7 +6,7 @@ import { LoginSchema, LoginSchemaType } from "@/lib/validationForm";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { login } from "@/api/api";
+import { login } from "@/services/api";
 import { HashLoader } from "react-spinners";
 import { Button } from "@/components/ui/button";
 import {
