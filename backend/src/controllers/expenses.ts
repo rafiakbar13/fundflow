@@ -33,15 +33,39 @@ export const getExpenses = async (req: Request, res: Response) => {
 export const createExpenses = async (req: Request, res: Response) => {
   try {
     const { id: userId } = req.params;
-
     const { name, amount, category } = req.body;
 
+    // Check if user exists
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Check if category exists
+    const categoryExists = await prisma.category.findUnique({
+      where: { id: category },
+    });
+
+    if (!categoryExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    // Create the expense
     const expenses = await prisma.expenses.create({
       data: {
         name,
         amount: parseInt(amount, 10),
-        userId: userId,
-        categoryId: category,
+        userId,
+        categoryId: categoryExists.id,
       },
     });
 
@@ -52,7 +76,7 @@ export const createExpenses = async (req: Request, res: Response) => {
 
     console.log("Expenses created successfully");
   } catch (error) {
-    console.log(error);
+    console.error("Error creating expense:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error",

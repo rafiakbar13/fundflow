@@ -12,7 +12,7 @@ import categoryRouter from "./routes/category";
 dotenv.config();
 
 const app: Application = express();
-const port = process.env.PORT! || 5000;
+const port = process.env.PORT || 5000;
 
 const corsOptions: CorsOptions = {
   origin: ["http://localhost:5173"],
