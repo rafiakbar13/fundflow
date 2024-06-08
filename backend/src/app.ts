@@ -9,6 +9,9 @@ import userRouter from "./routes/user";
 import goalRouter from "./routes/goals";
 import expensesRouter from "./routes/expenses";
 import categoryRouter from "./routes/category";
+import billsRouter from "./routes/bills";
+import transactionRouter from "./routes/transaction";
+import revenueRouter from "./routes/revenue";
 dotenv.config();
 
 const app: Application = express();
@@ -36,6 +39,9 @@ app.use("/api/user", userRouter);
 app.use("/api/goal", goalRouter);
 app.use("/api/expenses", expensesRouter);
 app.use("/api/category", categoryRouter);
+app.use("/api/bills", billsRouter);
+app.use("/api/transaction", transactionRouter);
+app.use("/api/revenue", revenueRouter);
 app.listen(port, () => {
   return console.log(`Server running on port at http://localhost:${port}`);
 });
