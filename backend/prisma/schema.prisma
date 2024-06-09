@@ -27,6 +27,7 @@ model User {
   revenues     Revenue[]
   transactions Transaction[]
   accounts     Account[]
+  categories   Category[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -70,6 +71,9 @@ model Category {
   revenues     Revenue[]
   transactions Transaction[]
 
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -99,8 +103,8 @@ model Transaction {
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 
-  paymentMethodId String
-  paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId String?
+  paymentMethod   PaymentMethod? @relation(fields: [paymentMethodId], references: [id])
 
   accountId String
   account   Account @relation(fields: [accountId], references: [id])

@@ -112,15 +112,15 @@ export const updateExpenses = async (req: Request, res: Response) => {
 export const getCategoryExpenses = async (req: Request, res: Response) => {
   try {
     const { id: userId } = req.params;
-    const expenses = await prisma.expenses.findMany({
+    const category = await prisma.category.findMany({
       where: {
-        userId,
+        id: userId,
       },
     });
 
     res.status(200).json({
       success: true,
-      data: expenses,
+      data: category,
     });
   } catch (error) {
     console.log(error);
@@ -158,6 +158,7 @@ export const createCategoryExpenses = async (req: Request, res: Response) => {
       data: {
         name,
         budget: parseInt(budget, 10),
+        userId: req.params.id,
       },
     });
 

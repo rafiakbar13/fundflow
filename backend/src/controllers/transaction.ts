@@ -12,13 +12,46 @@ export const createTransaction = async (req: Request, res: Response) => {
       categoryId,
       paymentMethodId,
       accountId,
-      userId,
     } = req.body;
 
+    const { id: userId } = req.params;
     if (!description || !amount || !type || !status || !date) {
       return res.status(400).json({
         success: false,
         message: "Invalid data",
+      });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const categoryExists = await prisma.category.findUnique({
+      where: { id: categoryId },
+    });
+
+    if (!categoryExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    const accountExists = await prisma.account.findUnique({
+      where: { id: accountId },
+    });
+
+    if (!accountExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Account not found",
       });
     }
 
@@ -29,10 +62,10 @@ export const createTransaction = async (req: Request, res: Response) => {
         type,
         status,
         date: new Date(date),
-        categoryId,
+        categoryId: categoryExists.id,
         paymentMethodId,
-        accountId,
-        userId: req.params.id,
+        accountId: accountExists.id,
+        userId: user.id,
       },
     });
 

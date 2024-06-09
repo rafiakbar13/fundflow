@@ -41,9 +41,9 @@ app.use("/api/goal", goalRouter);
 app.use("/api/expenses", expensesRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/bills", billsRouter);
-app.use("/api/transaction", transactionRouter);
+app.use("/api/transactions", transactionRouter);
 app.use("/api/revenue", revenueRouter);
-app.use("/api/account", accountRouter);
+app.use("/api/accounts", accountRouter);
 
 app.listen(port, () => {
   return console.log(`Server running on port at http://localhost:${port}`);

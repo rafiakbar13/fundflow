@@ -12,13 +12,26 @@ export const createAccount = async (req: Request, res: Response) => {
       });
     }
 
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
     const account = await prisma.account.create({
       data: {
         bankName,
         accountNumber,
         type,
         balance,
-        userId: userId,
+        userId: user.id,
       },
     });
 
