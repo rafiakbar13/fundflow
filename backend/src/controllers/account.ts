@@ -30,7 +30,7 @@ export const createAccount = async (req: Request, res: Response) => {
         bankName,
         accountNumber,
         type,
-        balance,
+        balance: parseFloat(balance),
         userId: user.id,
       },
     });
@@ -38,6 +38,7 @@ export const createAccount = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       data: account,
+      message: "Account created successfully",
     });
   } catch (error) {
     console.log(error);
@@ -63,6 +64,8 @@ export const getAccounts = async (req: Request, res: Response) => {
         userId,
       },
     });
+
+    console.log(accounts);
 
     res.status(200).json({
       status: true,

@@ -84,3 +84,51 @@ export const updateExpenses = async ({ expensesId, targetAmount }: any) => {
   });
   return res.data.data;
 };
+
+// TODO API Accounts
+export const getAccounts = async (userId: string) => {
+  const res = await API.get(`/accounts/${userId}`);
+  console.log(res);
+
+  return res.data.data;
+};
+
+export const getAccount = async (accountId: string) => {
+  const res = await API.get(`/accounts/${accountId}`);
+  console.log(res);
+
+  return res.data.data;
+};
+
+export const createAccount = async ({
+  bankName,
+  accountNumber,
+  type,
+  balance,
+  userId,
+}: any) => {
+  const res = await API.post(`/accounts/${userId}`, {
+    bankName,
+    accountNumber,
+    type,
+    balance,
+  });
+
+  return res.data;
+};
+
+export const updateAccount = async ({
+  accountId,
+  bankName,
+  accountNumber,
+  type,
+  balance,
+}: any) => {
+  const res = await API.patch(`/accounts/${accountId}`, {
+    bankName,
+    accountNumber,
+    type,
+    balance,
+  });
+  return res.data.data;
+};
