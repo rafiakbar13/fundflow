@@ -28,7 +28,7 @@ const FormEditAccounts = ({ accountData }: any) => {
     resolver: zodResolver(AccountSchema),
     defaultValues: {
       accountNumber: accountData?.accountNumber || "",
-      balance: accountData?.balance || "",
+      balance: accountData?.balance.toString() || "",
       bankName: accountData?.bankName || "",
       type: accountData?.type || "",
     },
@@ -48,19 +48,14 @@ const FormEditAccounts = ({ accountData }: any) => {
   });
 
   const onSubmit = async (values: AccountSchemaType) => {
-    balancesMutation.mutate(values);
+    const { accountNumber, balance, bankName, type } = values;
+    balancesMutation.mutate({
+      accountNumber,
+      balance,
+      bankName,
+      type,
+    });
   };
-
-  useEffect(() => {
-    if (accountData) {
-      form.reset({
-        accountNumber: accountData.accountNumber,
-        balance: accountData.balance,
-        bankName: accountData.bankName,
-        type: accountData.type,
-      });
-    }
-  }, [accountData, form]);
 
   return (
     <section className="flex items-center justify-center w-1/3 h-full mx-auto">

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AccountSchema, AccountSchemaType } from "@/lib/validationForm";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { HashLoader } from "react-spinners";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ import { authContext } from "@/context/AuthContext";
 const FormAddAccounts = () => {
   const { user } = useContext(authContext);
   const userId = user?.id;
+  const queryClient = useQueryClient();
   const form = useForm<AccountSchemaType>({
     resolver: zodResolver(AccountSchema),
     defaultValues: {
@@ -37,7 +38,8 @@ const FormAddAccounts = () => {
       return createAccount({ ...data, userId });
     },
     onSuccess: (data: any) => {
-      toast.success(data.data.message);
+      toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["balances"] });
     },
     onError: (error: any) => {
       toast.error(error.response.data.message);

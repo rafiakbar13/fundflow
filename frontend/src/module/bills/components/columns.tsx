@@ -5,6 +5,7 @@ import ActionColumn from "@/components/data-table/data-table-columns/ActionColum
 import ImageColumn from "@/components/data-table/data-table-columns/ImageColumn";
 import SortableColumn from "@/components/data-table/data-table-columns/SortableColumn";
 import DateColumn from "@/components/data-table/data-table-columns/DateColumn";
+import { convertToIndonesianTime, toRupiah } from "@/lib/utils";
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -34,30 +35,40 @@ export const columns: ColumnDef<any>[] = [
         className="font-semibold text-zinc-950"
       />
     ),
-    cell: ({ row }) => <ImageColumn row={row} accessorKey="image" />,
-  },
-  {
-    accessorKey: "logo",
-    header: ({ column }) => <SortableColumn column={column} title="Logo" />,
-    cell: ({ row }) => <span className="text-right">{row.original.name}</span>,
-  },
-  {
-    accessorKey: "description",
-    header: "Item Description",
-    cell: ({ row }) => {
-      return <DateColumn row={row} accessorKey="createdAt" />;
-    },
-  },
-  {
-    accessorKey: "charger",
-    header: ({ column }) => (
-      <SortableColumn column={column} title="Last Charge" />
+    cell: ({ row }) => (
+      <span className="text-right">
+        {convertToIndonesianTime(row.original.dueDate)}
+      </span>
     ),
-    cell: ({ row }) => <span className="text-right">{row.original.name}</span>,
   },
+  {
+    accessorKey: "name",
+    header: ({ column }) => <SortableColumn column={column} title="Name" />,
+    cell: ({ row }) => (
+      <span className="text-base font-semibold text-right">
+        {row.original.name}
+      </span>
+    ),
+  },
+  // {
+  //   accessorKey: "description",
+  //   header: "Item Description",
+  //   cell: ({ row }) => {
+  //     return <DateColumn row={row} accessorKey="createdAt" />;
+  //   },
+  // },
+  // {
+  //   accessorKey: "charger",
+  //   header: ({ column }) => (
+  //     <SortableColumn column={column} title="Last Charge" />
+  //   ),
+  //   cell: ({ row }) => <span className="text-right">{row.original.name}</span>,
+  // },
   {
     accessorKey: "amount",
     header: ({ column }) => <SortableColumn column={column} title="Amount" />,
-    cell: ({ row }) => <span className="text-right">{row.original.name}</span>,
+    cell: ({ row }) => (
+      <span className="text-right">{toRupiah(row.original.amount)}</span>
+    ),
   },
 ];

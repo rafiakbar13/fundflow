@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import FormAddAccounts from "./FormNewAccounts";
 import FormEditAccounts from "./FormEditAccount";
+import { toRupiah } from "@/lib/utils";
 type Props = {};
 
 const AccountDetails = (props: Props) => {
@@ -51,7 +52,7 @@ const AccountDetails = (props: Props) => {
 
         <CardHeader>
           <p className="text-sm text-gray-400">Balance</p>
-          <span>{balances?.balance}</span>
+          <span>{toRupiah(balances?.balance)}</span>
         </CardHeader>
 
         <CardHeader>

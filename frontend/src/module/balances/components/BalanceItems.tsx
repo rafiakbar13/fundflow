@@ -15,14 +15,16 @@ import {
 } from "@/components/ui/dialog";
 import { IoIosArrowForward as Detail } from "react-icons/io";
 import FormAddAccounts from "./FormNewAccounts";
-import { useQuery } from "@tanstack/react-query";
-import { getAccounts } from "@/services/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteAccount, getAccounts } from "@/services/api";
 import { authContext } from "@/context/AuthContext";
 import { Link } from "react-router-dom";
+import { secureAccountNumber, toRupiah } from "@/lib/utils";
 type Props = {};
 
 const BalanceItems = (props: Props) => {
   const { user } = React.useContext(authContext);
+  const queryClient = useQueryClient();
   const {
     data: balances,
     isLoading,
@@ -34,6 +36,24 @@ const BalanceItems = (props: Props) => {
       return data;
     },
   });
+
+  // delete account using react query
+  const mutation = useMutation({
+    mutationFn: async (accountId: string) => {
+      await deleteAccount(accountId);
+    },
+    onSuccess: () => {
+      // Invalidate and refetch accounts after deleting
+      queryClient.invalidateQueries({ queryKey: ["balances"] });
+    },
+    onError: (error: any) => {
+      console.error("Error deleting account:", error);
+    },
+  });
+
+  const handleDelete = (accountId: string) => {
+    mutation.mutate(accountId);
+  };
 
   return (
     <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -55,13 +75,19 @@ const BalanceItems = (props: Props) => {
               </div>
 
               <div className="space-y-1">
-                <span className="text-lg font-semibold">{balance.balance}</span>
+                <span className="text-lg font-semibold">
+                  {toRupiah(balance?.balance)}
+                </span>
                 <p className="text-sm text-gray-400">Total Amount</p>
               </div>
             </article>
           </CardContent>
           <CardFooter className="flex justify-between gap-x-16">
-            <Button variant={"link"} className="text-primary">
+            <Button
+              variant={"link"}
+              className="text-primary"
+              onClick={() => handleDelete(balance?.id)}
+            >
               Remove
             </Button>
             <Link to={`/dashboard/balances/${balance.id}`}>

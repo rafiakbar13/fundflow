@@ -87,14 +87,14 @@ export const updateExpenses = async ({ expensesId, targetAmount }: any) => {
 
 // TODO API Accounts
 export const getAccounts = async (userId: string) => {
-  const res = await API.get(`/accounts/${userId}`);
+  const res = await API.get(`/fundflow/${userId}/accounts`);
   console.log(res);
 
   return res.data.data;
 };
 
 export const getAccount = async (accountId: string) => {
-  const res = await API.get(`/accounts/${accountId}`);
+  const res = await API.get(`/fundflow/accounts/${accountId}`);
   console.log(res);
 
   return res.data.data;
@@ -107,7 +107,7 @@ export const createAccount = async ({
   balance,
   userId,
 }: any) => {
-  const res = await API.post(`/accounts/${userId}`, {
+  const res = await API.post(`/fundflow/${userId}/accounts`, {
     bankName,
     accountNumber,
     type,
@@ -124,11 +124,24 @@ export const updateAccount = async ({
   type,
   balance,
 }: any) => {
-  const res = await API.patch(`/accounts/${accountId}`, {
+  const res = await API.patch(`/fundflow/accounts/${accountId}`, {
     bankName,
     accountNumber,
     type,
     balance,
   });
+  console.log(res.data);
+
+  return res.data;
+};
+
+export const deleteAccount = async (accountId: string) => {
+  const res = await API.delete(`/fundflow/accounts/${accountId}`);
+  return res.data;
+};
+
+// TODO API Bills
+export const getBills = async (userId: string) => {
+  const res = await API.get(`/fundflow/bills/${userId}`);
   return res.data.data;
 };
