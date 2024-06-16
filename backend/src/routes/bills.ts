@@ -1,9 +1,9 @@
 import express from "express";
-import { createBill, getBills } from "../controllers/billsController";
+import { createBills, getBills } from "../controllers/billsController";
 
 const router = express.Router();
 
-router.post("/:id", createBill);
-router.get("/:id", getBills);
+router.post("/bills/:userId", createBills);
+router.get("/bills/:id", getBills);
 
 export default router;

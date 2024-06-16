@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 export const createAccount = async (req: Request, res: Response) => {
   try {
     const { bankName, accountNumber, type, balance } = req.body;
-    const { id: userId } = req.params;
+    const { userId } = req.params;
     if (!bankName || !accountNumber || !type || !balance) {
       return res.status(400).json({
         success: false,
@@ -14,7 +14,7 @@ export const createAccount = async (req: Request, res: Response) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: req.params.id,
+        id: userId,
       },
     });
 
@@ -25,17 +25,30 @@ export const createAccount = async (req: Request, res: Response) => {
       });
     }
 
+    const secureAccountNumber = (accountNumber: string) => {
+      const start = accountNumber.substring(0, accountNumber.length - 3);
+      const masked = accountNumber
+        .substring(accountNumber.length - 3)
+        .replace(/\d/g, "*");
+
+      return `${start}${masked}`;
+    };
+
+    const parsedBalance = parseFloat(
+      balance.replace(/,/g, "").replace(/\./g, "")
+    );
+
     const account = await prisma.account.create({
       data: {
         bankName,
-        accountNumber,
+        accountNumber: secureAccountNumber(accountNumber),
         type,
-        balance: parseFloat(balance),
-        userId: user.id,
+        balance: parsedBalance,
+        userId,
       },
     });
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       data: account,
       message: "Account created successfully",
@@ -51,7 +64,7 @@ export const createAccount = async (req: Request, res: Response) => {
 
 export const getAccounts = async (req: Request, res: Response) => {
   try {
-    const { id: userId } = req.params;
+    const { userId } = req.params;
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -83,18 +96,28 @@ export const getAccounts = async (req: Request, res: Response) => {
 export const updateAccount = async (req: Request, res: Response) => {
   try {
     const { id: accountId } = req.params;
+    const { bankName, accountNumber, type, balance } = req.body;
+    const parsedBalance = parseFloat(
+      balance.replace(/,/g, "").replace(/\./g, "")
+    );
     const account = await prisma.account.update({
       where: {
         id: accountId,
       },
       data: {
-        ...req.body,
+        bankName,
+        accountNumber,
+        type,
+        balance: parsedBalance,
       },
     });
+
+    console.log(account);
 
     res.status(200).json({
       success: true,
       data: account,
+      message: "Account updated successfully",
     });
   } catch (error) {
     console.log(error);
@@ -131,5 +154,35 @@ export const getAccount = async (req: Request, res: Response) => {
       success: false,
       message: "Internal server error",
     });
+  }
+};
+
+export const deleteAccount = async (req: Request, res: Response) => {
+  try {
+    const { id: accountId } = req.params;
+    if (!accountId) {
+      return res.status(400).json({
+        success: false,
+        message: "account not found",
+      });
+    }
+
+    const account = await prisma.account.delete({
+      where: {
+        id: accountId,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      data: account,
+      message: "Account deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+    console.log(error);
   }
 };

@@ -1,7 +1,8 @@
 import prisma from "../db/prisma";
 import { Request, Response } from "express";
-export const createBill = async (req: Request, res: Response) => {
+export const createBills = async (req: Request, res: Response) => {
   try {
+    const { userId } = req.params;
     const { name, amount, dueDate } = req.body;
     if (!name || !amount || !dueDate) {
       return res.status(400).json({
@@ -14,7 +15,7 @@ export const createBill = async (req: Request, res: Response) => {
         name,
         amount: parseInt(amount, 10),
         dueDate: new Date(dueDate),
-        userId: req.params.id,
+        userId,
       },
     });
 

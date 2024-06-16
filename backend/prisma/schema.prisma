@@ -101,13 +101,13 @@ model Transaction {
   date        DateTime @default(now())
 
   categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   paymentMethodId String?
-  paymentMethod   PaymentMethod? @relation(fields: [paymentMethodId], references: [id])
+  paymentMethod   PaymentMethod? @relation(fields: [paymentMethodId], references: [id],onDelete: Cascade, onUpdate: Cascade)
 
   accountId String
-  account   Account @relation(fields: [accountId], references: [id])
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -148,7 +148,7 @@ model Account {
   balance       Int
   accountNumber String
 
-  transactions Transaction[]
+  transactions Transaction[] 
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
