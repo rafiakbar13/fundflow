@@ -6,23 +6,29 @@ import ImageColumn from "@/components/data-table/data-table-columns/ImageColumn"
 import SortableColumn from "@/components/data-table/data-table-columns/SortableColumn";
 import DateColumn from "@/components/data-table/data-table-columns/DateColumn";
 import { convertToIndonesianTime, toRupiah } from "@/lib/utils";
+import { DeleteBtn } from "./DeleteBtn";
+import { EditBtn } from "./EditBtn";
 
 export const columns: ColumnDef<any>[] = [
   {
     id: "select",
     header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
+      <div className="flex items-center justify-center">
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected()}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      </div>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <div className="flex items-center justify-center">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -30,45 +36,61 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "dueDate",
     header: () => (
-      <DataTableColumnHeader
-        title="Due Date"
-        className="font-semibold text-zinc-950"
-      />
+      <div className="flex items-center justify-end">
+        <DataTableColumnHeader
+          title="Due Date"
+          className="font-semibold text-zinc-950"
+        />
+      </div>
     ),
     cell: ({ row }) => (
-      <span className="text-right">
-        {convertToIndonesianTime(row.original.dueDate)}
-      </span>
+      <div className="flex items-center justify-end">
+        <span>{convertToIndonesianTime(row.original?.dueDate)}</span>
+      </div>
     ),
   },
   {
     accessorKey: "name",
-    header: ({ column }) => <SortableColumn column={column} title="Name" />,
+    header: ({ column }) => (
+      <div className="flex items-center justify-center">
+        <SortableColumn column={column} title="Name" />
+      </div>
+    ),
     cell: ({ row }) => (
-      <span className="text-base font-semibold text-right">
-        {row.original.name}
-      </span>
+      <div className="flex items-center justify-center">
+        <span className="font-semibold">{row.original.name}</span>
+      </div>
     ),
   },
-  // {
-  //   accessorKey: "description",
-  //   header: "Item Description",
-  //   cell: ({ row }) => {
-  //     return <DateColumn row={row} accessorKey="createdAt" />;
-  //   },
-  // },
-  // {
-  //   accessorKey: "charger",
-  //   header: ({ column }) => (
-  //     <SortableColumn column={column} title="Last Charge" />
-  //   ),
-  //   cell: ({ row }) => <span className="text-right">{row.original.name}</span>,
-  // },
   {
     accessorKey: "amount",
-    header: ({ column }) => <SortableColumn column={column} title="Amount" />,
-    cell: ({ row }) => (
-      <span className="text-right">{toRupiah(row.original.amount)}</span>
+    header: ({ column }) => (
+      <div className="flex items-center justify-center">
+        <SortableColumn column={column} title="Amount" />
+      </div>
     ),
+    cell: ({ row }) => (
+      <div className="flex items-center justify-center">
+        <span>{toRupiah(row.original.amount)}</span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "actions",
+    header: () => (
+      <DataTableColumnHeader
+        title="Actions"
+        className="font-semibold text-right text-zinc-950"
+      />
+    ),
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-x-3">
+          <DeleteBtn billsId={row.original?.id} title="Bills" />
+          <EditBtn data={row} />
+        </div>
+      );
+    },
   },
 ];

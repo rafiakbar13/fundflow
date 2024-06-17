@@ -22,6 +22,7 @@ export const createBills = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       data: bill,
+      message: "Bill created successfully",
     });
   } catch (error) {
     console.log(error);
@@ -78,6 +79,7 @@ export const deleteBill = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       data: bill,
+      message: "Bill deleted successfully",
     });
   } catch (error) {
     console.log(error);
@@ -91,6 +93,10 @@ export const deleteBill = async (req: Request, res: Response) => {
 export const updateBill = async (req: Request, res: Response) => {
   try {
     const { id: billId } = req.params;
+    const { name, amount, dueDate } = req.body;
+    const parsedAmount = parseFloat(
+      amount.replace(/,/g, "").replace(/\./g, "")
+    );
     if (!billId) {
       return res.status(400).json({
         success: false,
@@ -102,13 +108,16 @@ export const updateBill = async (req: Request, res: Response) => {
         id: billId,
       },
       data: {
-        ...req.body,
+        name,
+        amount: parsedAmount,
+        dueDate: new Date(dueDate),
       },
     });
 
     res.status(200).json({
       success: true,
       data: bill,
+      message: "Bill updated successfully",
     });
   } catch (error) {
     console.log(error);

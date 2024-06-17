@@ -30,3 +30,11 @@ export const AccountSchema = z.object({
 });
 
 export type AccountSchemaType = z.infer<typeof AccountSchema>;
+
+export const BillsSchema = z.object({
+  name: z.string().min(3).max(20),
+  amount: z.string(),
+  dueDate: z.date().min(new Date()),
+});
+
+export type BillsSchemaType = z.infer<typeof BillsSchema>;

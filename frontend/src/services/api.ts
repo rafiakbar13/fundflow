@@ -145,3 +145,28 @@ export const getBills = async (userId: string) => {
   const res = await API.get(`/fundflow/bills/${userId}`);
   return res.data.data;
 };
+
+export const createBills = async ({ userId, name, amount, dueDate }: any) => {
+  const res = await API.post(`/fundflow/bills/${userId}`, {
+    name,
+    amount,
+    dueDate,
+  });
+  return res.data;
+};
+
+export const deleteBills = async (billsId: string) => {
+  const res = await API.delete(`/fundflow/bills/${billsId}`);
+  return res.data;
+};
+
+export const updateBills = async ({ billsId, name, amount, dueDate }: any) => {
+  const res = await API.put(`/fundflow/bills/${billsId}`, {
+    name,
+    amount,
+    dueDate,
+  });
+  console.log(res);
+
+  return res.data;
+};

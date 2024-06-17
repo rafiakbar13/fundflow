@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
+import { DeleteBtn } from "../actions/DeleteBtn";
 
 type Props = {
   row: any;
@@ -30,14 +31,14 @@ const ActionColumn = ({ row, title, endpoint }: Props) => {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {/* <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-2">
           <DeleteBtn title={title} endpoint={endpoint} />
-          <EditBtn
+          {/* <EditBtn
             row={row}
             endpoint={title.toLocaleLowerCase()}
             title={title}
-          />
-        </div> */}
+          /> */}
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
