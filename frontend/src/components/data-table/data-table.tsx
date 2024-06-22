@@ -25,7 +25,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
+// import { DataTableToolbar } from "./data-table-toolbar";
 
 // import { DataTablePagination } from "../components/data-table-pagination";
 // import { DataTableToolbar } from "../components/data-table-toolbar";
@@ -73,7 +73,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} filterKeys={filterKeys} />
+      {/* <DataTableToolbar table={table} filterKeys={filterKeys} /> */}
       <div className="bg-white border rounded-md">
         <Table>
           <TableHeader>

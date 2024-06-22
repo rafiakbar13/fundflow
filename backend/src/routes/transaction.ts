@@ -3,7 +3,7 @@ import { createTransaction, getTransactions } from "../controllers/transaction";
 
 const router = express.Router();
 
-router.post("/:id", createTransaction);
-router.get("/:id", getTransactions);
+router.post("/transactions/:id", createTransaction);
+router.get("/transactions/:id", getTransactions);
 
 export default router;

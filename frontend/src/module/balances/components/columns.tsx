@@ -5,6 +5,7 @@ import ActionColumn from "@/components/data-table/data-table-columns/ActionColum
 import ImageColumn from "@/components/data-table/data-table-columns/ImageColumn";
 import SortableColumn from "@/components/data-table/data-table-columns/SortableColumn";
 import DateColumn from "@/components/data-table/data-table-columns/DateColumn";
+import { toRupiah } from "@/lib/utils";
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -27,35 +28,72 @@ export const columns: ColumnDef<any>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "date",
+    accessorKey: "items",
     header: () => (
       <DataTableColumnHeader
-        title="Date"
+        title="Items"
         className="font-semibold text-zinc-950"
       />
     ),
-    cell: ({ row }) => <ImageColumn row={row} accessorKey="image" />,
+    cell: ({ row }) => <span className="text-right">{row.original.items}</span>,
   },
   {
     accessorKey: "status",
-    header: ({ column }) => <SortableColumn column={column} title="Status" />,
-    cell: ({ row }) => <span className="text-right">{row.original.name}</span>,
+    header: ({ column }) => (
+      <div className="text-center">
+        <SortableColumn column={column} title="Status" />
+      </div>
+    ),
+    cell: ({ row }) => (
+      <span className="block text-center">{row.original.status}</span>
+    ),
   },
   {
-    accessorKey: "transactionType",
-    header: "Transaction Type",
-    cell: ({ row }) => {
-      return <DateColumn row={row} accessorKey="createdAt" />;
-    },
+    accessorKey: "type",
+    header: ({ column }) => <SortableColumn column={column} title="Type" />,
+    cell: ({ row }) => (
+      <span className="block text-center">{row.original.type}</span>
+    ),
   },
   {
-    accessorKey: "receipt",
-    header: ({ column }) => <SortableColumn column={column} title="Receipt" />,
-    cell: ({ row }) => <span className="text-right">{row.original.name}</span>,
+    accessorKey: "payment",
+    header: ({ column }) => (
+      <div className="text-center">
+        <SortableColumn column={column} title="Payment Method" />
+      </div>
+    ),
+    cell: ({ row }) => (
+      <span className="block text-center">{row.original.paymentMethod}</span>
+    ),
   },
   {
     accessorKey: "amount",
-    header: ({ column }) => <SortableColumn column={column} title="Amount" />,
-    cell: ({ row }) => <span className="text-right">{row.original.name}</span>,
+    header: ({ column }) => (
+      <div className="text-center">
+        <SortableColumn column={column} title="Amount" />
+      </div>
+    ),
+    cell: ({ row }) => (
+      <span className="block text-center">{toRupiah(row.original.amount)}</span>
+    ),
+  },
+  {
+    accessorKey: "actions",
+    header: () => (
+      <DataTableColumnHeader
+        title="Actions"
+        className="font-semibold text-right text-zinc-950"
+      />
+    ),
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <ActionColumn
+          row={row}
+          title="Menu"
+          endpoint={`menu/${row.original.id}`}
+        />
+      );
+    },
   },
 ];

@@ -21,23 +21,23 @@ import {
 import FormAddAccounts from "./FormNewAccounts";
 import FormEditAccounts from "./FormEditAccount";
 import { toRupiah } from "@/lib/utils";
-type Props = {};
 
-const AccountDetails = (props: Props) => {
-  const { id } = useParams();
-  const accountId = id ?? "";
-  const {
-    data: balances,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["balancesDetail"],
-    queryFn: async () => {
-      const data = await getAccount(accountId);
-      return data;
-    },
-  });
+interface BalancesAccount {
+  id: string;
+  bankName: string;
+  type: string;
+  balance: number;
+  accountNumber: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
+interface AccountDetailsProps {
+  balances: BalancesAccount;
+}
+
+const AccountDetails = ({ balances }: AccountDetailsProps) => {
   return (
     <Card className="w-full mt-2 border-none ">
       <div className="grid grid-cols-3">

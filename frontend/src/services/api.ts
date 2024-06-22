@@ -95,8 +95,6 @@ export const getAccounts = async (userId: string) => {
 
 export const getAccount = async (accountId: string) => {
   const res = await API.get(`/fundflow/accounts/${accountId}`);
-  console.log(res);
-
   return res.data.data;
 };
 
@@ -170,3 +168,44 @@ export const updateBills = async ({ billsId, name, amount, dueDate }: any) => {
 
   return res.data;
 };
+
+// Todo Transactions
+
+export const createTransactions = async ({
+  userId,
+  items,
+  amount,
+  type,
+  status,
+  date,
+  paymentMethod,
+  accountId,
+}: any) => {
+  const res = await API.post(`/fundflow/transactions/${userId}`, {
+    items,
+    amount,
+    type,
+    status,
+    date,
+    paymentMethod,
+    accountId,
+  });
+  return res.data;
+};
+
+export const getTransactions = async (userId: string) => {
+  const res = await API.get(`/fundflow/transactions/${userId}`);
+  return res.data;
+};
+
+export const getTransactionsByType = async (userId: string, type: string) => {
+  const res = await API.get(`/fundflow/transactions/${userId}?type=${type}`);
+  return res.data;
+};
+
+// export const getExpenses = async (userId: string, type: string) => {
+//   const res = await API.get(`/fundflow/transactions/${userId}?type=${type}`);
+//   return res.data;
+// };
+
+export const deleteTransactions = async (transactionsId: string) => {};

@@ -1,21 +1,13 @@
 import prisma from "../db/prisma";
 import { Request, Response } from "express";
-
+import { parseCurrency } from "../utils";
 export const createTransaction = async (req: Request, res: Response) => {
   try {
-    const {
-      description,
-      amount,
-      type,
-      status,
-      date,
-      categoryId,
-      paymentMethodId,
-      accountId,
-    } = req.body;
+    const { items, amount, type, status, date, paymentMethod, accountId } =
+      req.body;
 
     const { id: userId } = req.params;
-    if (!description || !amount || !type || !status || !date) {
+    if (!items || !amount || !type || !status || !date) {
       return res.status(400).json({
         success: false,
         message: "Invalid data",
@@ -33,16 +25,16 @@ export const createTransaction = async (req: Request, res: Response) => {
       });
     }
 
-    const categoryExists = await prisma.category.findUnique({
-      where: { id: categoryId },
-    });
+    // const categoryExists = await prisma.category.findUnique({
+    //   where: { id: categoryId },
+    // });
 
-    if (!categoryExists) {
-      return res.status(404).json({
-        success: false,
-        message: "Category not found",
-      });
-    }
+    // if (!categoryExists) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: "Category not found",
+    //   });
+    // }
 
     const accountExists = await prisma.account.findUnique({
       where: { id: accountId },
@@ -57,13 +49,12 @@ export const createTransaction = async (req: Request, res: Response) => {
 
     const transaction = await prisma.transaction.create({
       data: {
-        description,
-        amount,
+        items,
+        amount: parseCurrency(amount),
         type,
         status,
+        paymentMethod,
         date: new Date(date),
-        categoryId: categoryExists.id,
-        paymentMethodId,
         accountId: accountExists.id,
         userId: user.id,
       },
@@ -72,6 +63,7 @@ export const createTransaction = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       data: transaction,
+      message: "Transaction created successfully",
     });
   } catch (error) {
     console.log(error);
@@ -84,6 +76,7 @@ export const createTransaction = async (req: Request, res: Response) => {
 
 export const getTransactions = async (req: Request, res: Response) => {
   try {
+    const { type } = req.query;
     const { id: userId } = req.params;
     if (!userId) {
       return res.status(400).json({
@@ -92,11 +85,9 @@ export const getTransactions = async (req: Request, res: Response) => {
       });
     }
     const transactions = await prisma.transaction.findMany({
-      include: {
-        category: true,
-        paymentMethod: true,
-        account: true,
-        user: true,
+      where: {
+        userId,
+        type: type as string,
       },
     });
     if (!transactions) {

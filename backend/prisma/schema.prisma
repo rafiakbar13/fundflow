@@ -69,7 +69,7 @@ model Category {
   budget       Int
   expenses     Expenses[]
   revenues     Revenue[]
-  transactions Transaction[]
+  // transactions Transaction[]
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -94,17 +94,15 @@ model Bills {
 
 model Transaction {
   id          String   @id @default(cuid())
-  description String?
+  items       String?
   amount      Int?
-  type        String // "income" or "expense"
-  status      String // "completed", "pending", "failed"
+  type        String 
+  status      String 
+  paymentMethod String
   date        DateTime @default(now())
 
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  paymentMethodId String?
-  paymentMethod   PaymentMethod? @relation(fields: [paymentMethodId], references: [id],onDelete: Cascade, onUpdate: Cascade)
+  // categoryId String
+  // category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   accountId String
   account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -126,16 +124,6 @@ model Revenue {
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model PaymentMethod {
-  id         String @id @default(cuid())
-  methodName String
-
-  transactions Transaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

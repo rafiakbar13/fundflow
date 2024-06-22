@@ -41,7 +41,7 @@ app.use("/api/goal", goalRouter);
 app.use("/api/expenses", expensesRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/fundflow", billsRouter);
-app.use("/api/transactions", transactionRouter);
+app.use("/api/fundflow", transactionRouter);
 app.use("/api/revenue", revenueRouter);
 app.use("/api/fundflow", accountRouter);
 

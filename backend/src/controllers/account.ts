@@ -142,6 +142,9 @@ export const getAccount = async (req: Request, res: Response) => {
       where: {
         id: accountId,
       },
+      include: {
+        transactions: true,
+      },
     });
 
     res.status(200).json({

@@ -1,5 +1,6 @@
 import prisma from "../db/prisma";
 import { Request, Response } from "express";
+import { parseCurrency } from "../utils";
 export const createBills = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -10,10 +11,11 @@ export const createBills = async (req: Request, res: Response) => {
         message: "Invalid data",
       });
     }
+
     const bill = await prisma.bills.create({
       data: {
         name,
-        amount: parseInt(amount, 10),
+        amount: parseCurrency(amount),
         dueDate: new Date(dueDate),
         userId,
       },
@@ -94,9 +96,7 @@ export const updateBill = async (req: Request, res: Response) => {
   try {
     const { id: billId } = req.params;
     const { name, amount, dueDate } = req.body;
-    const parsedAmount = parseFloat(
-      amount.replace(/,/g, "").replace(/\./g, "")
-    );
+
     if (!billId) {
       return res.status(400).json({
         success: false,
@@ -109,7 +109,7 @@ export const updateBill = async (req: Request, res: Response) => {
       },
       data: {
         name,
-        amount: parsedAmount,
+        amount: parseCurrency(amount),
         dueDate: new Date(dueDate),
       },
     });

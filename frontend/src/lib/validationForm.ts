@@ -38,3 +38,15 @@ export const BillsSchema = z.object({
 });
 
 export type BillsSchemaType = z.infer<typeof BillsSchema>;
+
+export const TransactionsSchema = z.object({
+  items: z.string().min(3).max(20),
+  type: z.string().min(3).max(20),
+  status: z.string().min(3).max(20),
+  paymentMethod: z.string().min(3).max(20),
+  accountId: z.string().min(3).max(45),
+  amount: z.string(),
+  date: z.date().min(new Date()),
+});
+
+export type TransactionsSchemaType = z.infer<typeof TransactionsSchema>;
