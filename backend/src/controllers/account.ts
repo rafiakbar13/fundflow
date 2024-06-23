@@ -97,9 +97,11 @@ export const updateAccount = async (req: Request, res: Response) => {
   try {
     const { id: accountId } = req.params;
     const { bankName, accountNumber, type, balance } = req.body;
+
     const parsedBalance = parseFloat(
       balance.replace(/,/g, "").replace(/\./g, "")
     );
+
     const account = await prisma.account.update({
       where: {
         id: accountId,

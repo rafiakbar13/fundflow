@@ -24,10 +24,10 @@ model User {
   goals        Goals[]
   expenses     Expenses[]
   bills        Bills[]
-  revenues     Revenue[]
+  // revenues     Revenue[]
   transactions Transaction[]
   accounts     Account[]
-  categories   Category[]
+  // categories   Category[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -48,28 +48,26 @@ model Goals {
   updatedAt DateTime @updatedAt
 }
 
+// model Expenses {
+//   id     String  @id @default(cuid())
+//   name   String?
+//   amount Int?
+
+//   categoryId String
+//   category   Category @relation(fields: [categoryId], references: [id])
+
+//   user   User   @relation(fields: [userId], references: [id])
+//   userId String
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
 model Expenses {
-  id     String  @id @default(cuid())
-  name   String?
-  amount Int?
-
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Category {
   id           String        @id @default(cuid())
   name         String        @unique
   budget       Int
-  expenses     Expenses[]
-  revenues     Revenue[]
-  // transactions Transaction[]
+  transactions Transaction[]
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -101,8 +99,8 @@ model Transaction {
   paymentMethod String
   date        DateTime @default(now())
 
-  // categoryId String
-  // category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  expensesId String?
+  expenses   Expenses? @relation(fields: [expensesId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   accountId String
   account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -114,20 +112,20 @@ model Transaction {
   updatedAt DateTime @updatedAt
 }
 
-model Revenue {
-  id     String  @id @default(cuid())
-  name   String?
-  amount Int?
+// model Revenue {
+//   id     String  @id @default(cuid())
+//   name   String?
+//   amount Int?
 
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
+//   categoryId String
+//   category   Category @relation(fields: [categoryId], references: [id])
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+//   userId String
+//   user   User   @relation(fields: [userId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 
 model Account {
   id            String @id @default(cuid())

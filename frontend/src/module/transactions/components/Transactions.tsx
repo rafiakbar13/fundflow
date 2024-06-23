@@ -13,7 +13,7 @@ import AllTransaction from "./AllTtransaction/AllTransaction";
 import Revenue from "./revenue/Revenue";
 import Expenses from "./expenses/Expenses";
 import { Button } from "@/components/ui/button";
-import FormAddTransactions from "./AllTtransaction/FormAddTransactions";
+import FormAddTransactions from "./FormAddTransactions";
 import { useLocation, useNavigate } from "react-router-dom";
 
 type Props = {};

@@ -8,8 +8,8 @@ import { authenticate } from "../auth/verifyToken";
 
 const router = express.Router();
 
-router.get("/:id", authenticate, getExpenses);
-router.post("/:id", authenticate, createExpenses);
-router.patch("/:id", authenticate, updateExpenses);
+router.get("/expenses/:id", authenticate, getExpenses);
+router.post("/expenses/:id", authenticate, createExpenses);
+router.patch("/expenses/:id", authenticate, updateExpenses);
 
 export default router;

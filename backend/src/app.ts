@@ -8,10 +8,10 @@ import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
 import goalRouter from "./routes/goals";
 import expensesRouter from "./routes/expenses";
-import categoryRouter from "./routes/category";
+// import categoryRouter from "./routes/category";
 import billsRouter from "./routes/bills";
 import transactionRouter from "./routes/transaction";
-import revenueRouter from "./routes/revenue";
+// import revenueRouter from "./routes/revenue";
 import accountRouter from "./routes/account";
 dotenv.config();
 
@@ -38,11 +38,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/goal", goalRouter);
-app.use("/api/expenses", expensesRouter);
-app.use("/api/category", categoryRouter);
+app.use("/api/fundflow", expensesRouter);
+// app.use("/api/category", categoryRouter);
 app.use("/api/fundflow", billsRouter);
 app.use("/api/fundflow", transactionRouter);
-app.use("/api/revenue", revenueRouter);
+// app.use("/api/revenue", revenueRouter);
 app.use("/api/fundflow", accountRouter);
 
 app.listen(port, () => {

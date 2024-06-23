@@ -45,8 +45,16 @@ export const TransactionsSchema = z.object({
   status: z.string().min(3).max(20),
   paymentMethod: z.string().min(3).max(20),
   accountId: z.string().min(3).max(45),
+  expensesId: z.string().min(3).max(45),
   amount: z.string(),
   date: z.date().min(new Date()),
 });
 
 export type TransactionsSchemaType = z.infer<typeof TransactionsSchema>;
+
+export const ExpensesSchema = z.object({
+  name: z.string().min(3).max(20),
+  budget: z.string(),
+});
+
+export type ExpensesSchemaType = z.infer<typeof ExpensesSchema>;

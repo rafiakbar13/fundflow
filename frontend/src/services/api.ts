@@ -74,8 +74,16 @@ export const createGoals = async ({
 
 // TODO API Expenses by category
 export const getExpenses = async (userId: string) => {
-  const res = await API.get(`/user/${userId}`);
+  const res = await API.get(`/fundflow/expenses/${userId}`);
   return res.data.data;
+};
+
+export const createExpenses = async ({ userId, name, budget }: any) => {
+  const res = await API.post(`/fundflow/expenses/${userId}`, {
+    name,
+    budget,
+  });
+  return res.data;
 };
 
 export const updateExpenses = async ({ expensesId, targetAmount }: any) => {

@@ -3,8 +3,16 @@ import { Request, Response } from "express";
 import { parseCurrency } from "../utils";
 export const createTransaction = async (req: Request, res: Response) => {
   try {
-    const { items, amount, type, status, date, paymentMethod, accountId } =
-      req.body;
+    const {
+      items,
+      amount,
+      type,
+      status,
+      date,
+      paymentMethod,
+      accountId,
+      expensesId,
+    } = req.body;
 
     const { id: userId } = req.params;
     if (!items || !amount || !type || !status || !date) {
@@ -54,6 +62,7 @@ export const createTransaction = async (req: Request, res: Response) => {
         type,
         status,
         paymentMethod,
+        expensesId,
         date: new Date(date),
         accountId: accountExists.id,
         userId: user.id,

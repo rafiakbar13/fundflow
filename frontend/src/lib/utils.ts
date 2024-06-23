@@ -24,6 +24,10 @@ export function secureAccountNumber(accountNumber: string) {
 export function convertToIndonesianTime(utcDateString: string) {
   const date = new Date(utcDateString);
 
+  if (isNaN(date.getTime())) {
+    return "Invalid date";
+  }
+
   // Format options for Indonesian time, explicitly typed
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",

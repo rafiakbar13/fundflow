@@ -30,8 +30,8 @@ export const getUser = async (req: Request, res: Response) => {
       expenses: {
         select: {
           id: true,
-          category: true,
-          amount: true,
+          name: true,
+          budget: true,
           createdAt: true,
           updatedAt: true,
         },

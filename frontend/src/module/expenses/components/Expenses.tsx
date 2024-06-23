@@ -3,9 +3,17 @@ import React from "react";
 import ComparisonExpenses from "./ComparisonExpenses";
 import ExpensesBreakdown from "./ExpensesBreakdown";
 
-type Props = {};
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import FormAddExpenses from "./FormAddExpenses";
 
-const Expenses = (props: Props) => {
+const Expenses = () => {
   return (
     <div className="p-4">
       {/* Goals */}
@@ -15,7 +23,20 @@ const Expenses = (props: Props) => {
       </div>
       {/* Expenses Goals By Category */}
       <div className="mt-4">
-        <Header title="Expenses Breakdown" />
+        <div className="flex items-center justify-between px-2 pb-3">
+          <Header title="Expenses Breakdown" />
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="">Add Expenses</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-fit">
+              <DialogHeader>
+                <DialogTitle>Add Expenses</DialogTitle>
+              </DialogHeader>
+              <FormAddExpenses />
+            </DialogContent>
+          </Dialog>
+        </div>
         <div>
           <ExpensesBreakdown />
         </div>
