@@ -41,7 +41,7 @@ export const createExpenses = async (req: Request, res: Response) => {
     const expenses = await prisma.expenses.create({
       data: {
         name,
-        budget: parseFloat(budget),
+        budget: parseCurrency(budget),
         user: {
           connect: {
             id: userId,
@@ -161,18 +161,20 @@ export const getExpenses = async (req: Request, res: Response) => {
 export const updateExpenses = async (req: Request, res: Response) => {
   try {
     const { id: expensesId } = req.params;
+    const { budget } = req.body;
     const expenses = await prisma.expenses.update({
       where: {
         id: expensesId,
       },
       data: {
-        ...req.body,
+        budget: parseCurrency(budget),
       },
     });
 
     res.status(200).json({
       success: true,
       data: expenses,
+      message: "Expenses updated successfully",
     });
   } catch (error) {
     console.log(error);

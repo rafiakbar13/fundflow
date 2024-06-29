@@ -24,7 +24,7 @@ const ExpensesBreakdown = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["bills"],
+    queryKey: ["expenses"],
     queryFn: async () => {
       const data = await getExpenses(user?.id);
       return data;
@@ -66,18 +66,24 @@ const ExpensesBreakdown = () => {
           </CardHeader>
           <CardContent>
             <div className="p-3 space-y-4 divide-y-[1px]">
-              {expense?.transactions?.map((transaction: any) => (
-                <div
-                  key={transaction.id}
-                  className="flex items-center justify-between pt-1 text-right"
-                >
-                  <p>{transaction.items}</p>
-                  <div>
-                    <span>{toRupiah(transaction.amount)}</span>
-                    <p>{convertToIndonesianTime(transaction.date)}</p>
+              {expense?.transactions?.length > 0 ? (
+                expense.transactions.map((transaction: any) => (
+                  <div
+                    key={transaction.id}
+                    className="flex items-center justify-between pt-1 text-right"
+                  >
+                    <p>{transaction.items}</p>
+                    <div>
+                      <span>{toRupiah(transaction.amount)}</span>
+                      <p>{convertToIndonesianTime(transaction.date)}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-sm text-center text-gray-400">
+                  No transactions
+                </p>
+              )}
             </div>
           </CardContent>
         </Card>

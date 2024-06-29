@@ -86,10 +86,12 @@ export const createExpenses = async ({ userId, name, budget }: any) => {
   return res.data;
 };
 
-export const updateExpenses = async ({ expensesId, targetAmount }: any) => {
-  const res = await API.patch(`/expenses/${expensesId}`, {
-    targetAmount,
+export const updateExpenses = async ({ expensesId, budget }: any) => {
+  const res = await API.patch(`/fundflow/expenses/${expensesId}`, {
+    budget,
   });
+  console.log(res);
+
   return res.data.data;
 };
 
@@ -188,6 +190,7 @@ export const createTransactions = async ({
   date,
   paymentMethod,
   accountId,
+  expensesId,
 }: any) => {
   const res = await API.post(`/fundflow/transactions/${userId}`, {
     items,
@@ -197,7 +200,9 @@ export const createTransactions = async ({
     date,
     paymentMethod,
     accountId,
+    expensesId,
   });
+
   return res.data;
 };
 

@@ -78,8 +78,6 @@ export const getAccounts = async (req: Request, res: Response) => {
       },
     });
 
-    console.log(accounts);
-
     res.status(200).json({
       status: true,
       data: accounts,
@@ -113,8 +111,6 @@ export const updateAccount = async (req: Request, res: Response) => {
         balance: parsedBalance,
       },
     });
-
-    console.log(account);
 
     res.status(200).json({
       success: true,

@@ -59,12 +59,6 @@ const SavingMoney = (props: Props) => {
   const queryClient = useQueryClient();
   const { control, handleSubmit } = useForm();
 
-  // const FormSchema = z.object({
-  //   dob: z.date({
-  //     required_error: "A date of birth is required.",
-  //   }),
-  // });
-
   // const form = useForm<z.infer<typeof FormSchema>>({
   //   resolver: zodResolver(FormSchema),
   // });

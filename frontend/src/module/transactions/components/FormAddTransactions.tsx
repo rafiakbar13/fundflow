@@ -93,8 +93,6 @@ const FormAddTransactions = () => {
   });
 
   const onSubmit = async (values: TransactionsSchemaType) => {
-    console.log(values);
-
     transactionMutation.mutate(values);
   };
 
@@ -269,13 +267,13 @@ const FormAddTransactions = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {expenses?.map((account: any) => (
+                          {expenses?.map((expense: any) => (
                             <SelectItem
-                              key={account?.id}
-                              value={account?.id}
+                              key={expense?.id}
+                              value={expense?.id}
                               className="cursor-pointer hover:bg-gray-100"
                             >
-                              {account?.name}
+                              {expense?.name}
                             </SelectItem>
                           ))}
                         </SelectGroup>

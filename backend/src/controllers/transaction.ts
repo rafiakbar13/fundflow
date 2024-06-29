@@ -14,8 +14,19 @@ export const createTransaction = async (req: Request, res: Response) => {
       expensesId,
     } = req.body;
 
+    console.log(req.body);
+
     const { id: userId } = req.params;
-    if (!items || !amount || !type || !status || !date) {
+    if (
+      !items ||
+      !amount ||
+      !type ||
+      !status ||
+      !date ||
+      !paymentMethod ||
+      !accountId ||
+      !expensesId
+    ) {
       return res.status(400).json({
         success: false,
         message: "Invalid data",
@@ -33,16 +44,16 @@ export const createTransaction = async (req: Request, res: Response) => {
       });
     }
 
-    // const categoryExists = await prisma.category.findUnique({
-    //   where: { id: categoryId },
-    // });
+    const expensesExists = await prisma.expenses.findUnique({
+      where: { id: expensesId },
+    });
 
-    // if (!categoryExists) {
-    //   return res.status(404).json({
-    //     success: false,
-    //     message: "Category not found",
-    //   });
-    // }
+    if (!expensesExists) {
+      return res.status(404).json({
+        success: false,
+        message: "expenses not found",
+      });
+    }
 
     const accountExists = await prisma.account.findUnique({
       where: { id: accountId },
@@ -62,12 +73,14 @@ export const createTransaction = async (req: Request, res: Response) => {
         type,
         status,
         paymentMethod,
-        expensesId,
+        expensesId: expensesExists.id,
         date: new Date(date),
         accountId: accountExists.id,
         userId: user.id,
       },
     });
+
+    console.log(transaction);
 
     res.status(200).json({
       success: true,
