@@ -51,6 +51,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays, format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { AmountInput } from "@/module/balances/components/CustomAccountInput";
 
 type Props = {};
 
@@ -105,36 +106,40 @@ const SavingMoney = (props: Props) => {
     labels: ["Progress"],
   };
 
-  const goals = useQuery({
+  const {
+    data: goals,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["goals"],
     queryFn: async () => {
-      const goals = await getGoals(user?.id);
-      return goals;
+      const data = await getGoals(user?.id);
+      return data.data;
     },
   });
 
-  const goal = goals.data?.goals;
-  // console.log(goal);
+  console.log(goals);
 
-  const createGoals: any = useMutation({
+  const createGoal: any = useMutation({
     mutationFn: async (data: any) => {
       return createGoals({ ...data, userId: user?.id });
     },
     onSuccess: () => {
-      toast.success("Goal Create successfully");
+      toast.success("Goal created successfully");
       queryClient.invalidateQueries({ queryKey: ["goals"] });
     },
     onError: () => {
-      toast.error("Failed to create goals");
+      toast.error("Failed to create goal");
     },
   });
 
   function onSubmit(values: any) {
-    const { dateRange, presentAmount, targetAmount } = values;
+    console.log(values);
+
     // const from = format(dateRange.from, "yyyy-MM-dd");
 
     // const to = format(dateRange.to, "yyyy-MM-dd");
-    createGoals.mutate({ dateRange, presentAmount, targetAmount });
+    createGoal.mutate(values);
   }
 
   return (
@@ -146,7 +151,7 @@ const SavingMoney = (props: Props) => {
         </div>
         <CardContent>
           <div className="flex items-center justify-between pt-2">
-            {goal?.map((goal: any) => (
+            {goals?.map((goal: any) => (
               <div className="space-y-8">
                 {/* Target Achieved */}
                 <div className="flex items-center space-x-3">
@@ -222,11 +227,11 @@ const SavingMoney = (props: Props) => {
                       name="targetAmount"
                       control={control}
                       render={({ field }) => (
-                        <Input
-                          type="number"
-                          id="targetAmount"
-                          placeholder="$200,000"
-                          {...field}
+                        <AmountInput
+                          control={control}
+                          name="targetAmount"
+                          placeholder="1.000"
+                          className="w-full"
                         />
                       )}
                     />
@@ -237,11 +242,11 @@ const SavingMoney = (props: Props) => {
                       name="presentAmount"
                       control={control}
                       render={({ field }) => (
-                        <Input
-                          type="number"
-                          id="presentAmount"
-                          placeholder="$100,000"
-                          {...field}
+                        <AmountInput
+                          control={control}
+                          name="presentAmount"
+                          placeholder="1.000"
+                          className="w-full"
                         />
                       )}
                     />

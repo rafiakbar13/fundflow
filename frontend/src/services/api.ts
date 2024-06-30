@@ -52,7 +52,7 @@ export const getProfile = async (userId: string) => {
 
 //TODO API GOALS
 export const getGoals = async (userId: string) => {
-  const res = await API.get(`/user/${userId}`);
+  const res = await API.get(`/fundflow/goals/${userId}`);
   return res.data.data;
 };
 
@@ -62,14 +62,14 @@ export const createGoals = async ({
   presentAmount,
   dateRange,
 }: any) => {
-  const res = await API.post(`/goal/${userId}`, {
+  const res = await API.post(`/fundflow/goals/${userId}`, {
     targetAmount,
     presentAmount,
     dateRange,
   });
   console.log(res);
 
-  return res.data.data;
+  return res.data;
 };
 
 // TODO API Expenses by category

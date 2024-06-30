@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -5,14 +6,22 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import React from "react";
+
+import BalancesCarousel from "../components/carousel/BalancesCarousel";
+import { EmblaOptionsType } from "embla-carousel";
 
 type Props = {};
 
 const TotalBalances = (props: Props) => {
+  const OPTIONS: EmblaOptionsType = { dragFree: true, loop: true };
+  const SLIDE_COUNT = 5;
+  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+
   return (
     <div>
-      <Card className="w-full bg-white border-none shadow-md">
+      <BalancesCarousel slides={SLIDES} options={OPTIONS} />
+
+      {/* <Card className="w-full bg-white border-none shadow-md">
         <CardHeader>
           <div className="flex items-center justify-between pb-4 border-b-[1px] border-slate-200">
             <p className="text-xl font-bold">$240,399</p>
@@ -38,7 +47,7 @@ const TotalBalances = (props: Props) => {
           </Button>
           <Button></Button>
         </CardFooter>
-      </Card>
+      </Card> */}
     </div>
   );
 };

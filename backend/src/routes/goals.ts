@@ -4,7 +4,7 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/:id", authenticate, getGoals);
-router.post("/:id", authenticate, createGoal);
+router.get("/goals/:userId", authenticate, getGoals);
+router.post("/goals/:id", authenticate, createGoal);
 
 export default router;

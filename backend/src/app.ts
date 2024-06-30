@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
-app.use("/api/goal", goalRouter);
+app.use("/api/fundflow", goalRouter);
 app.use("/api/fundflow", expensesRouter);
 // app.use("/api/category", categoryRouter);
 app.use("/api/fundflow", billsRouter);
