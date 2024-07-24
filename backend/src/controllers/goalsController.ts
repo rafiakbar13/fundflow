@@ -3,23 +3,27 @@ import { Request, Response } from "express";
 
 export const getGoals = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
-
-    const goal = await prisma.goals.findUnique({
+    const { id: userId } = req.params;
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "user not found",
+      });
+    }
+    const goals = await prisma.goals.findMany({
       where: {
-        id: userId,
+        userId,
       },
     });
-
-    console.log(goal);
-
-    if (!goal) {
-      return res.status(400).json({ status: false, message: "Goal not found" });
+    if (!goals) {
+      return res.status(400).json({
+        success: false,
+        message: "goals not found",
+      });
     }
-
     res.status(200).json({
       success: true,
-      data: goal,
+      data: goals,
     });
   } catch (error) {
     console.log(error);

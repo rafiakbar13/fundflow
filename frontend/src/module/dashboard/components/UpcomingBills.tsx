@@ -48,7 +48,7 @@ const UpcomingBills = () => {
   }, [bills]);
 
   return (
-    <div>
+    <div className="">
       <Card className="w-full bg-white border-none shadow-md">
         <CardContent>
           {sortedBills?.map((bill: any) => (

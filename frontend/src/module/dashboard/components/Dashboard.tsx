@@ -7,10 +7,11 @@ import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { authContext } from "@/context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
-import { getExpenses } from "@/services/api";
+import { getExpenses, getGoals } from "@/services/api";
 import { toRupiah } from "@/lib/utils";
 
 import { PiMedalMilitaryLight as Achieved } from "react-icons/pi";
+import SavingMoney from "@/module/goals/components/SavingMoney";
 
 type Props = {};
 
@@ -21,16 +22,27 @@ const Dashboard = (props: Props) => {
     queryKey: ["expensesCategory"],
     queryFn: () => getExpenses(user?.id),
   });
+  const {
+    data: goals,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["goals"],
+    queryFn: async () => {
+      const data = await getGoals(user?.id);
+      return data;
+    },
+  });
 
   return (
     <section className="p-4 space-y-3">
       {/* Header */}
-      <article className="grid grid-cols-3 gap-x-3">
+      <article className="grid grid-cols-3 gap-x-2">
         <div className="">
           <TotalBalances />
         </div>
-        <div className="bg-primary">
-          <p>Goals</p>
+        <div className="">
+          <SavingMoney goals={goals} />
         </div>
         <div className="">
           <UpcomingBills />

@@ -9,6 +9,9 @@ import {
 
 import BalancesCarousel from "../components/carousel/BalancesCarousel";
 import { EmblaOptionsType } from "embla-carousel";
+import { useQuery } from "@tanstack/react-query";
+import { getAccounts } from "@/services/api";
+import { authContext } from "@/context/AuthContext";
 
 type Props = {};
 
@@ -17,9 +20,25 @@ const TotalBalances = (props: Props) => {
   const SLIDE_COUNT = 5;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
+  const { user } = React.useContext(authContext);
+  const {
+    data: balances,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["balances"],
+    queryFn: async () => {
+      const data = await getAccounts(user?.id);
+      return data;
+    },
+  });
+  // console.log(balances.length);
+
+  // const DATA = Array.from(Array(balances?.length).keys());
+
   return (
     <div>
-      <BalancesCarousel slides={SLIDES} options={OPTIONS} />
+      <BalancesCarousel data={balances} slides={SLIDES} options={OPTIONS} />
 
       {/* <Card className="w-full bg-white border-none shadow-md">
         <CardHeader>

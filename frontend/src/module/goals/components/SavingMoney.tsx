@@ -30,35 +30,25 @@ import { DatePicker } from "./date-picker";
 import { getGoals, createGoals } from "@/services/api";
 import { toast } from "sonner";
 
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { addDays, format } from "date-fns";
-import { cn } from "@/lib/utils";
+
 import { AmountInput } from "@/module/balances/components/CustomAccountInput";
 
-type Props = {};
-
-const SavingMoney = (props: Props) => {
+const SavingMoney = (goals: any) => {
   const { user } = useContext(authContext);
   const queryClient = useQueryClient();
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      presentAmount: goals.goals?.presentAmount,
+      targetAmount: goals.goals?.targetAmount,
+      dateRange: {
+        from: goals.goals?.from,
+        to: goals.goals?.to,
+      },
+    },
+  });
 
   // const form = useForm<z.infer<typeof FormSchema>>({
   //   resolver: zodResolver(FormSchema),
@@ -106,20 +96,6 @@ const SavingMoney = (props: Props) => {
     labels: ["Progress"],
   };
 
-  const {
-    data: goals,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["goals"],
-    queryFn: async () => {
-      const data = await getGoals(user?.id);
-      return data.data;
-    },
-  });
-
-  console.log(goals);
-
   const createGoal: any = useMutation({
     mutationFn: async (data: any) => {
       return createGoals({ ...data, userId: user?.id });
@@ -143,7 +119,7 @@ const SavingMoney = (props: Props) => {
   }
 
   return (
-    <Card className="w-7/12 mt-2 bg-white border-none shadow-md">
+    <Card className="w-full bg-white border-none shadow-md">
       <CardHeader>
         <div className="flex items-center justify-between pb-4 border-b-[1px] border-slate-200">
           <SubHeader title="Saving Summary" className="mr-2 text-nowrap" />
@@ -151,7 +127,7 @@ const SavingMoney = (props: Props) => {
         </div>
         <CardContent>
           <div className="flex items-center justify-between pt-2">
-            {goals?.map((goal: any) => (
+            {goals.goals?.map((goal: any) => (
               <div className="space-y-8">
                 {/* Target Achieved */}
                 <div className="flex items-center space-x-3">
@@ -176,6 +152,7 @@ const SavingMoney = (props: Props) => {
               </div>
             ))}
             {/* Chart */}
+
             <div className="w-40">
               <Chart {...ChartConfig} type="radialBar" height={200} />
             </div>

@@ -30,7 +30,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="text-white w-60 bg-slate-900">
+    <aside className="w-48 text-white bg-slate-900">
       {/* Logo */}
       <article className="flex flex-col items-center justify-center">
         <h1 className="pt-5 text-3xl font-bold text-center">
