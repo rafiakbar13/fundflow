@@ -15,22 +15,18 @@ import transactionRouter from "./routes/transaction";
 import accountRouter from "./routes/account";
 dotenv.config();
 
-const app: Application = express();
+export const app: Application = express();
 const port = process.env.PORT || 5000;
 
 const corsOptions: CorsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: ["*"],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 };
-
-app.get("/", (req, res) => {
-  res.send("API IS RUNNING");
-});
 
 // middleware
 app.use(cookieParser());
 app.use(cors(corsOptions));
-
+app.use(express.json());
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,6 +41,12 @@ app.use("/api/fundflow", transactionRouter);
 // app.use("/api/revenue", revenueRouter);
 app.use("/api/fundflow", accountRouter);
 
+app.get("/", (req, res) => {
+  res.send("API IS RUNNING");
+});
+
 app.listen(port, () => {
   return console.log(`Server running on port at http://localhost:${port}`);
 });
+
+export default app;
