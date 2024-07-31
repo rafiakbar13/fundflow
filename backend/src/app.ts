@@ -19,7 +19,7 @@ export const app: Application = express();
 const port = process.env.PORT || 5000;
 
 const corsOptions: CorsOptions = {
-  origin: ["*"],
+  origin: ["http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 };
 
